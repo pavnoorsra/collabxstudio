@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Profile • CollabX Studio</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="nav">
+      <div class="brand">
+        <a href="index.html">CollabX Studio</a>
+        <span class="badge">add profile</span>
+      </div>
+      <div class="links">
+        <a class="btn" href="discover.html">Discover</a>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="card">
+        <h2 style="margin:0 0 6px">Add your profile</h2>
+        <p class="p">Takes less than a minute. Keep it simple.</p>
+
+        <form id="profileForm">
+          <div class="field">
+            <label>Role</label>
+            <select id="role" required>
+              <option>Producer</option>
+              <option>Singer</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Artist name</label>
+            <input id="name" placeholder="Your artist name" required />
+          </div>
+
+          <div class="field">
+            <label>Genre</label>
+            <select id="genre" required>
+              <option value="">Select genre</option>
+              <option>Hip-Hop</option>
+              <option>R&B</option>
+              <option>Pop</option>
+              <option>EDM</option>
+              <option>Lo-fi</option>
+              <option>Rock</option>
+              <option>Punjabi</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>City / Country</label>
+            <input id="country" placeholder="Toronto, Canada" required />
+          </div>
+
+          <div class="field">
+            <label>Sample link</label>
+            <input id="link" placeholder="https://soundcloud.com/..." required />
+            <small>Any public link works.</small>
+          </div>
+
+          <div class="row" style="margin-top:16px">
+            <button class="btn primary" type="submit">Save profile</button>
+            <a class="btn" href="discover.html">View people</a>
+          </div>
+        </form>
+
+        <div class="footer">Saved locally for now.</div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+
+</body>
+</html>

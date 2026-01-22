@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Discover • CollabX Studio</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="nav">
+      <div class="brand">
+        <a href="index.html">CollabX Studio</a>
+        <span class="badge">discover</span>
+      </div>
+      <div class="links">
+        <a class="btn primary" href="add.html">Add profile</a>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="card">
+        <h2 style="margin:0 0 6px">Discover collaborators</h2>
+        <p class="notice">People here are open to collaborate.</p>
+
+        <div class="row" style="margin:12px 0">
+          <select id="filterRole">
+            <option value="all">All</option>
+            <option value="Producer">Producers</option>
+            <option value="Singer">Singers</option>
+          </select>
+          <button id="clearAll" class="btn">Clear local data</button>
+        </div>
+
+        <div id="list" class="cards"></div>
+        <div class="footer">Local demo version.</div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+
+</body>
+</html>
