@@ -63,3 +63,22 @@ small{color:var(--muted)}
 .hr{height:1px;background:var(--border);margin:14px 0}
 .footer{color:var(--muted);font-size:12px;margin-top:22px}
 .notice{color:var(--muted);font-size:13px;margin-top:10px}
+/* Fix native select dropdown white issue (dark theme) */
+select {
+  background-color: rgba(255,255,255,0.04);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+/* Dropdown options */
+select option {
+  background-color: #0b0b10;
+  color: #f4f4f7;
+}
+
+/* Hover / selected option */
+select option:checked,
+select option:hover {
+  background-color: #7c5cff;
+  color: #ffffff;
+}
