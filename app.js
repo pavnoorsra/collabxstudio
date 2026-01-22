@@ -52,7 +52,7 @@ async function initDiscover() {
         div.innerHTML = `
           <h3>${p.name} <span class="badge">${p.role}</span></h3>
           <div class="meta">${p.genre} • ${p.country}</div>
-          <a class="btn" href="${p.link}" target="_blank">Open sample</a>
+          <a class="btn" href="${p.link}" target="_blank">About artist</a>
         `;
         list.appendChild(div);
       });
