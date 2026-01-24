@@ -9,15 +9,14 @@
 
 <body>
 
-<!-- 🔐 EMAIL VERIFY POPUP -->
-<div id="authModal" style="position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:999;">
-  <div style="background:#131320;padding:20px;border-radius:14px;width:300px">
-    <h3>Verify your email</h3>
-    <p style="color:#aaa;font-size:13px">Enter email to continue</p>
-    <input id="emailInput" placeholder="Enter email" style="width:100%;margin-bottom:10px" />
-    <button id="sendOtpBtn" class="btn primary" style="width:100%">Send OTP</button>
+<div id="authModal" class="modal">
+  <div class="modal-box">
+    <h2>Enter your email to continue</h2>
+    <input type="email" id="emailInput" placeholder="Your email" />
+    <button id="sendOtpBtn">Continue</button>
   </div>
 </div>
+
 
 <!-- 🌐 MAIN SITE -->
 <div class="container">
@@ -53,6 +52,7 @@
 
 <!-- 🔌 SCRIPT -->
 <script type="module" src="app.js"></script>
+
 
 </body>
 </html>
