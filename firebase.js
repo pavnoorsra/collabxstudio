@@ -1,19 +1,19 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDCTeY2_l3ox2mG5d9mUerrA0erQ1GHR38",
-  authDomain: "collabx-c0b10.firebaseapp.com",
-  projectId: "collabx-c0b10",
-  storageBucket: "collabx-c0b10.firebasestorage.app",
-  messagingSenderId: "502495747245",
-  appId: "1:502495747245:web:3ce2fa9fee46ef4330ba24"
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "XXXX",
+  appId: "XXXX"
 };
 
 const app = initializeApp(firebaseConfig);
 
 export const db = getFirestore(app);
+export const storage = getStorage(app);
 
-
-export { collection, addDoc, getDocs, serverTimestamp };
+export { collection, addDoc, getDocs, serverTimestamp, ref, uploadBytes, getDownloadURL };
