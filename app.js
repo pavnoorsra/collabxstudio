@@ -1,30 +1,5 @@
 import { db, collection, addDoc, getDocs, serverTimestamp } from "./firebase.js";
 
-/* ================= EMAIL GATE (NO AUTH) ================= */
-
-const modal = document.getElementById("authModal");
-const emailInput = document.getElementById("emailInput");
-const sendBtn = document.getElementById("sendOtpBtn");
-
-const savedEmail = localStorage.getItem("userEmail");
-
-if (!savedEmail && modal) {
-  modal.style.display = "flex";
-} else if (modal) {
-  modal.style.display = "none";
-}
-
-if (sendBtn) {
-  sendBtn.onclick = () => {
-    const email = emailInput.value.trim();
-    if (!email) return alert("Enter your email");
-    localStorage.setItem("userEmail", email);
-    modal.style.display = "none";
-  };
-}
-
-/* ================= FIRESTORE ================= */
-
 const profilesRef = collection(db, "profiles");
 
 /* ================= ADD PROFILE ================= */
@@ -41,12 +16,12 @@ function initAdd() {
       name: document.querySelector("#name").value.trim(),
       genre: document.querySelector("#genre").value,
       country: document.querySelector("#country").value.trim(),
-      link: document.querySelector("#link")?.value.trim() || "",
-      createdAt: serverTimestamp(),
-      email: localStorage.getItem("userEmail")
+      contactPlatform: document.querySelector("#contactPlatform").value,
+      contactId: document.querySelector("#contactId").value.trim(),
+      createdAt: serverTimestamp()
     };
 
-    if (!data.name || !data.genre || !data.country) {
+    if (!data.name || !data.genre || !data.country || !data.contactPlatform || !data.contactId) {
       alert("Fill all fields");
       return;
     }
@@ -65,25 +40,37 @@ const detailBox = document.getElementById("detailBox");
 function openDetail(p) {
   detailBox.innerHTML = `
     <h2>${p.name}</h2>
+
     <p style="margin:10px 0;color:#aaa">
       This artist is a <b>${p.role.toLowerCase()}</b> from <b>${p.country}</b>
       creating <b>${p.genre}</b> music and looking for collaborators.
     </p>
 
-    <p><b>Contact:</b> ${p.email || "Not provided"}</p>
+    <div id="contactArea" style="display:none;margin-top:12px">
+      This artist's <b>${p.contactPlatform}</b> is 
+      <span style="color:#7c5cff">@${p.contactId}</span>
+    </div>
 
     <div style="margin-top:14px;display:flex;gap:10px">
-      <a class="btn primary" href="mailto:${p.email}">Email artist</a>
+      <button class="btn primary" id="showContactBtn">View contact info</button>
       <button class="btn" id="closeDetail">Close</button>
     </div>
   `;
 
-  detailModal.style.display = "flex";
+  document.getElementById("showContactBtn").onclick = () => {
+    document.getElementById("contactArea").style.display = "block";
+  };
 
   document.getElementById("closeDetail").onclick = () => {
     detailModal.style.display = "none";
   };
+
+  detailModal.style.display = "flex";
 }
+
+detailModal?.addEventListener("click", (e) => {
+  if (e.target === detailModal) detailModal.style.display = "none";
+});
 
 /* ================= DISCOVER ================= */
 

@@ -9,17 +9,6 @@
 
 <body>
 
-<!-- 🔐 EMAIL VERIFY POPUP -->
-<div id="authModal" style="position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:999;">
-  <div style="background:#131320;padding:20px;border-radius:14px;width:300px">
-    <h3>Verify your email</h3>
-    <p style="color:#aaa;font-size:13px">Enter email to continue</p>
-    <input id="emailInput" placeholder="Enter email" style="width:100%;margin-bottom:10px" />
-    <button id="sendOtpBtn" class="btn primary" style="width:100%">Send OTP</button>
-  </div>
-</div>
-
-<!-- 🌐 MAIN SITE -->
 <div class="container">
   <div class="nav">
     <div class="brand">
@@ -33,8 +22,8 @@
 
   <div class="hero">
     <div class="card">
-      <h2 style="margin:0 0 6px">Add your profile</h2>
-      <p class="p">Takes less than a minute. Keep it simple.</p>
+      <h2>Add your profile</h2>
+      <p class="p">Let others find and contact you.</p>
 
       <form id="profileForm">
         <div class="field">
@@ -70,6 +59,24 @@
           <input id="country" required />
         </div>
 
+        <div class="field">
+          <label>Contact platform</label>
+          <select id="contactPlatform" required>
+            <option value="">Select platform</option>
+            <option value="Instagram">Instagram</option>
+            <option value="Snapchat">Snapchat</option>
+            <option value="Twitter">Twitter (X)</option>
+            <option value="Discord">Discord</option>
+            <option value="WhatsApp">WhatsApp</option>
+            <option value="Telegram">Telegram</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Username / ID</label>
+          <input id="contactId" placeholder="your username on that platform" required />
+        </div>
+
         <div class="row" style="margin-top:16px">
           <button class="btn primary" type="submit">Save profile</button>
           <a class="btn" href="discover.html">View people</a>
@@ -79,8 +86,6 @@
   </div>
 </div>
 
-<!-- 🔌 SCRIPT -->
 <script type="module" src="app.js"></script>
-
 </body>
 </html>

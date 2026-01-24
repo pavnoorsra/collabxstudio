@@ -9,21 +9,11 @@
 
 <body>
 
-<!-- 🔐 EMAIL VERIFY POPUP -->
-<div id="authModal" style="position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:999;">
-  <div style="background:#131320;padding:20px;border-radius:14px;width:300px">
-    <h3>Verify your email</h3>
-    <p style="color:#aaa;font-size:13px">Enter email to continue</p>
-    <input id="emailInput" placeholder="Enter email" style="width:100%;margin-bottom:10px" />
-    <button id="sendOtpBtn" class="btn primary" style="width:100%">Send OTP</button>
-  </div>
-</div>
-<!-- 👤 ARTIST DETAIL MODAL -->
-<div id="detailModal" style="display:none" class="modal">
+<!-- 👤 DETAIL MODAL -->
+<div id="detailModal" class="modal">
   <div class="modal-box" id="detailBox"></div>
 </div>
 
-<!-- 🌐 MAIN SITE -->
 <div class="container">
   <div class="nav">
     <div class="brand">
@@ -37,8 +27,8 @@
 
   <div class="hero">
     <div class="card">
-      <h2 style="margin:0 0 6px">Discover collaborators</h2>
-      <p class="notice">People here are open to collaborate.</p>
+      <h2>Discover collaborators</h2>
+      <p class="notice">Click an artist to see details.</p>
 
       <div class="row" style="margin:12px 0">
         <select id="filterRole">
@@ -46,7 +36,6 @@
           <option value="Producer">Producers</option>
           <option value="Singer">Singers</option>
         </select>
-
       </div>
 
       <div id="list" class="cards"></div>
@@ -54,8 +43,6 @@
   </div>
 </div>
 
-<!-- 🔌 SCRIPT -->
 <script type="module" src="app.js"></script>
-
 </body>
 </html>
