@@ -6,36 +6,53 @@
   <title>CollabX Studio</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-  <div class="container">
-    <div class="nav">
-      <div class="brand">
-        <span>CollabX Studio</span>
-        <span class="badge">version 1.0</span>
-      </div>
-      <div class="links">
-        <a class="btn" href="discover.html">Discover</a>
-      </div>
+
+<!-- 🔐 EMAIL VERIFY POPUP -->
+<div id="authModal" style="position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:999;">
+  <div style="background:#131320;padding:20px;border-radius:14px;width:300px">
+    <h3>Verify your email</h3>
+    <p style="color:#aaa;font-size:13px">Enter email to continue</p>
+    <input id="emailInput" placeholder="Enter email" style="width:100%;margin-bottom:10px" />
+    <button id="sendOtpBtn" class="btn primary" style="width:100%">Send OTP</button>
+  </div>
+</div>
+
+<!-- 🌐 MAIN SITE -->
+<div class="container">
+  <div class="nav">
+    <div class="brand">
+      <span>CollabX Studio</span>
+      <span class="badge">version 1.0</span>
     </div>
+    <div class="links">
+      <a class="btn" href="discover.html">Discover</a>
+    </div>
+  </div>
 
-    <div class="hero">
-      <h1 class="h1">Collaborate with singers & producers.</h1>
-      <p class="p">
-        Add a simple profile. Browse people. Start collaborating.
-      </p>
+  <div class="hero">
+    <h1 class="h1">Collaborate with singers & producers.</h1>
+    <p class="p">
+      Add a simple profile. Browse people. Start collaborating.
+    </p>
 
-      <div class="grid">
-        <div class="card">
-          <h2 style="margin:0 0 10px">Start now</h2>
-          <p class="p">Choose your role and add one sample link.</p>
+    <div class="grid">
+      <div class="card">
+        <h2 style="margin:0 0 10px">Start now</h2>
+        <p class="p">Choose your role and add one sample link.</p>
 
-          <div class="row" style="margin-top:16px">
-            <a class="btn primary" href="add.html?role=Producer">🎧 Add Producer Profile</a>
-            <a class="btn" href="add.html?role=Singer">🎤 Add Singer Profile</a>
-          </div>
+        <div class="row" style="margin-top:16px">
+          <a class="btn primary" href="add.html?role=Producer">🎧 Add Producer Profile</a>
+          <a class="btn" href="add.html?role=Singer">🎤 Add Singer Profile</a>
         </div>
       </div>
     </div>
   </div>
+</div>
+
+<!-- 🔌 SCRIPT -->
+<script type="module" src="app.js"></script>
+
 </body>
 </html>

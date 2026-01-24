@@ -6,73 +6,87 @@
   <title>Add Profile • CollabX Studio</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-  <div class="container">
-    <div class="nav">
-      <div class="brand">
-        <a href="index.html">CollabX Studio</a>
-        <span class="badge">add profile</span>
-      </div>
-      <div class="links">
-        <a class="btn" href="discover.html">Discover</a>
-      </div>
+
+<!-- 🔐 EMAIL VERIFY POPUP -->
+<div id="authModal" style="position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:999;">
+  <div style="background:#131320;padding:20px;border-radius:14px;width:300px">
+    <h3>Verify your email</h3>
+    <p style="color:#aaa;font-size:13px">Enter email to continue</p>
+    <input id="emailInput" placeholder="Enter email" style="width:100%;margin-bottom:10px" />
+    <button id="sendOtpBtn" class="btn primary" style="width:100%">Send OTP</button>
+  </div>
+</div>
+
+<!-- 🌐 MAIN SITE -->
+<div class="container">
+  <div class="nav">
+    <div class="brand">
+      <a href="index.html">CollabX Studio</a>
+      <span class="badge">add profile</span>
     </div>
-
-    <div class="hero">
-      <div class="card">
-        <h2 style="margin:0 0 6px">Add your profile</h2>
-        <p class="p">Takes less than a minute. Keep it simple.</p>
-
-        <form id="profileForm">
-          <div class="field">
-            <label>Role</label>
-            <select id="role" required>
-              <option>Producer</option>
-              <option>Singer</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label>Artist name</label>
-            <input id="name" placeholder="Your artist name" required />
-          </div>
-
-          <div class="field">
-            <label>Genre</label>
-            <select id="genre" required>
-              <option value="">Select genre</option>
-              <option>Hip-Hop</option>
-              <option>R&B</option>
-              <option>Pop</option>
-              <option>EDM</option>
-              <option>Lo-fi</option>
-              <option>Rock</option>
-              <option>Punjabi</option>
-              <option>Other</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label>City / Country</label>
-            <input id="country" required />
-          </div>
-
-          <div class="field">
-            <label>About (link)</label>
-            <input id="link" placeholder="https://instagram.com/..."  />
-            <small>Any public link works.</small>
-          </div>
-
-          <div class="row" style="margin-top:16px">
-            <button class="btn primary" type="submit">Save profile</button>
-            <a class="btn" href="discover.html">View people</a>
-          </div>
-        </form>
-      </div>
+    <div class="links">
+      <a class="btn" href="discover.html">Discover</a>
     </div>
   </div>
 
-  <script type="module" src="app.js"></script>
+  <div class="hero">
+    <div class="card">
+      <h2 style="margin:0 0 6px">Add your profile</h2>
+      <p class="p">Takes less than a minute. Keep it simple.</p>
+
+      <form id="profileForm">
+        <div class="field">
+          <label>Role</label>
+          <select id="role" required>
+            <option>Producer</option>
+            <option>Singer</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Artist name</label>
+          <input id="name" placeholder="Your artist name" required />
+        </div>
+
+        <div class="field">
+          <label>Genre</label>
+          <select id="genre" required>
+            <option value="">Select genre</option>
+            <option>Hip-Hop</option>
+            <option>R&B</option>
+            <option>Pop</option>
+            <option>EDM</option>
+            <option>Lo-fi</option>
+            <option>Rock</option>
+            <option>Punjabi</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>City / Country</label>
+          <input id="country" required />
+        </div>
+
+        <div class="field">
+          <label>About (link)</label>
+          <input id="link" placeholder="https://instagram.com/..." />
+          <small>Any public link works.</small>
+        </div>
+
+        <div class="row" style="margin-top:16px">
+          <button class="btn primary" type="submit">Save profile</button>
+          <a class="btn" href="discover.html">View people</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- 🔌 SCRIPT -->
+<script type="module" src="app.js"></script>
 
 </body>
 </html>
