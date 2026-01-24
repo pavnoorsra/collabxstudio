@@ -1,109 +1,131 @@
+import { db, collection, addDoc, getDocs, serverTimestamp } from "./firebase.js";
 import {
-  db, storage,
-  collection, addDoc, getDocs, serverTimestamp,
-  ref, uploadBytes, getDownloadURL
-} from "./firebase.js";
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
+const storage = getStorage();
 const profilesRef = collection(db, "profiles");
 
 /* ================= ADD PROFILE ================= */
-const form = document.querySelector("#profileForm");
+function initAdd() {
+  const form = document.querySelector("#profileForm");
+  if (!form) return;
 
-if (form) {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const role = roleEl.value;
-    const name = nameEl.value.trim();
-    const genre = genreEl.value.trim();
-    const country = countryEl.value.trim();
-    const platform = contactPlatform.value;
-    const contactId = contactIdEl.value.trim();
-    const files = tracks.files;
+    const role = document.querySelector("#role").value;
+    const name = document.querySelector("#name").value.trim();
+    const genre = document.querySelector("#genre").value;
+    const country = document.querySelector("#country").value.trim();
+    const platform = document.querySelector("#platform").value;
+    const username = document.querySelector("#username").value.trim();
+    const files = document.querySelector("#workFiles").files;
+
+    if (!name || !genre || !country || !platform || !username) {
+      alert("Fill all fields");
+      return;
+    }
+
+    let audioUrls = [];
 
     if (files.length > 2) {
       alert("Max 2 MP3 files allowed");
       return;
     }
 
-    let trackUrls = [];
-
     for (let file of files) {
-      const fileRef = ref(storage, `tracks/${Date.now()}-${file.name}`);
+      const fileRef = ref(storage, "tracks/" + Date.now() + "_" + file.name);
       await uploadBytes(fileRef, file);
       const url = await getDownloadURL(fileRef);
-      trackUrls.push(url);
+      audioUrls.push(url);
     }
 
-    await addDoc(profilesRef, {
+    const data = {
       role,
       name,
       genre,
       country,
-      contactPlatform: platform,
-      contactId,
-      tracks: trackUrls,
+      platform,
+      username,
+      audioUrls,
       createdAt: serverTimestamp()
-    });
+    };
 
+    await addDoc(profilesRef, data);
     alert("Profile added 🔥");
     window.location.href = "discover.html";
   });
 }
 
 /* ================= DISCOVER ================= */
-const list = document.querySelector("#list");
-const detailModal = document.getElementById("detailModal");
-const detailBox = document.getElementById("detailBox");
+async function initDiscover() {
+  const list = document.querySelector("#list");
+  const filter = document.querySelector("#filterRole");
+  const detailModal = document.getElementById("detailModal");
+  const detailBox = document.getElementById("detailBox");
 
-async function loadProfiles() {
   if (!list) return;
 
-  list.innerHTML = "";
-  const snap = await getDocs(profilesRef);
+  async function render() {
+    list.innerHTML = "Loading...";
+    const snap = await getDocs(profilesRef);
+    const all = snap.docs.map(d => d.data());
+    const role = filter.value;
 
-  snap.forEach(doc => {
-    const p = doc.data();
+    list.innerHTML = "";
 
-    const div = document.createElement("div");
-    div.className = "profile";
-    div.innerHTML = `
-      <h3>${p.name} <span class="badge">${p.role}</span></h3>
-      <div class="meta">${p.genre} • ${p.country}</div>
-    `;
+    all
+      .filter(p => role === "all" || p.role === role)
+      .forEach(p => {
+        const div = document.createElement("div");
+        div.className = "profile";
+        div.innerHTML = `
+          <h3>${p.name} <span class="badge">${p.role}</span></h3>
+          <div class="meta">${p.genre} • ${p.country}</div>
+        `;
 
-    div.onclick = () => showDetails(p);
-    list.appendChild(div);
-  });
-}
-
-function showDetails(p) {
-  detailModal.style.display = "flex";
-
-  let tracksHTML = "";
-  if (p.tracks?.length) {
-    tracksHTML = p.tracks.map(url =>
-      `<audio controls src="${url}" style="width:100%;margin-top:8px"></audio>`
-    ).join("");
+        div.onclick = () => openDetail(p);
+        list.appendChild(div);
+      });
   }
 
-  detailBox.innerHTML = `
-    <h2>${p.name}</h2>
-    <p>This artist is a ${p.role.toLowerCase()} from ${p.country} creating ${p.genre} music and looking for collaborators.</p>
+  function openDetail(p) {
+    detailBox.innerHTML = `
+      <h2>${p.name}</h2>
+      <p class="notice">
+        This artist is a ${p.role.toLowerCase()} from ${p.country}
+        creating ${p.genre} music and looking for collaborators.
+      </p>
 
-    <div class="hr"></div>
+      <p><b>Contact:</b> ${p.platform} → ${p.username}</p>
 
-    <p><strong>Contact:</strong> ${p.contactPlatform} — ${p.contactId}</p>
+      ${p.audioUrls?.length ? `
+        <h4 style="margin-top:12px">Artist work</h4>
+        ${p.audioUrls.map(url => `
+          <audio controls style="width:100%;margin-top:6px">
+            <source src="${url}" type="audio/mpeg">
+          </audio>
+        `).join("")}
+      ` : ""}
 
-    <div class="hr"></div>
+      <div class="row" style="margin-top:14px">
+        <button class="btn" id="closeDetail">Close</button>
+      </div>
+    `;
 
-    <h4>Artist's work</h4>
-    ${tracksHTML}
+    detailModal.style.display = "flex";
+    document.getElementById("closeDetail").onclick = () => {
+      detailModal.style.display = "none";
+    };
+  }
 
-    <div class="row" style="margin-top:12px">
-      <button class="btn" onclick="document.getElementById('detailModal').style.display='none'">Close</button>
-    </div>
-  `;
+  filter.addEventListener("change", render);
+  render();
 }
 
-loadProfiles();
+initAdd();
+initDiscover();

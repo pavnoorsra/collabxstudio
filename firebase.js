@@ -3,12 +3,12 @@ import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from "http
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "XXXX",
-  appId: "XXXX"
+  apiKey: "AIzaSyBJuEbYm7CF-iHelcv4b4ZgeayBOISKs2A",
+  authDomain: "collabx-us.firebaseapp.com",
+  projectId: "collabx-us",
+  storageBucket: "collabx-us.firebasestorage.app",
+  messagingSenderId: "161792029565",
+  appId: "1:161792029565:web:c202adcd57cb74bc6c1214"
 };
 
 const app = initializeApp(firebaseConfig);
