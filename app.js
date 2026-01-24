@@ -1,8 +1,6 @@
 import { db, collection, addDoc, getDocs, serverTimestamp } from "./firebase.js";
 
-const profilesRef = collection(db, "profiles");
-
-/* ================= EMAIL POPUP ================= */
+/* ================= EMAIL GATE (NO AUTH) ================= */
 
 const modal = document.getElementById("authModal");
 const emailInput = document.getElementById("emailInput");
@@ -20,11 +18,14 @@ if (sendBtn) {
   sendBtn.onclick = () => {
     const email = emailInput.value.trim();
     if (!email) return alert("Enter your email");
-
     localStorage.setItem("userEmail", email);
     modal.style.display = "none";
   };
 }
+
+/* ================= FIRESTORE ================= */
+
+const profilesRef = collection(db, "profiles");
 
 /* ================= ADD PROFILE ================= */
 
@@ -40,12 +41,13 @@ function initAdd() {
       name: document.querySelector("#name").value.trim(),
       genre: document.querySelector("#genre").value,
       country: document.querySelector("#country").value.trim(),
-      email: localStorage.getItem("userEmail"),
-      createdAt: serverTimestamp()
+      link: document.querySelector("#link")?.value.trim() || "",
+      createdAt: serverTimestamp(),
+      email: localStorage.getItem("userEmail")
     };
 
-    if (!data.name || !data.genre || !data.country || !data.email) {
-      alert("Fill all fields and enter email");
+    if (!data.name || !data.genre || !data.country) {
+      alert("Fill all fields");
       return;
     }
 
@@ -57,29 +59,18 @@ function initAdd() {
 
 /* ================= DETAIL MODAL ================= */
 
-let detailModal;
-let detailBox;
+const detailModal = document.getElementById("detailModal");
+const detailBox = document.getElementById("detailBox");
 
-function createDetailModal() {
-  detailModal = document.createElement("div");
-  detailModal.id = "detailModal";
-  detailModal.innerHTML = `
-    <div id="detailBox"></div>
-  `;
-  document.body.appendChild(detailModal);
-
-  detailModal.addEventListener("click", (e) => {
-    if (e.target === detailModal) detailModal.style.display = "none";
-  });
-}
-
-function showDetails(p) {
-  const text = `This artist is a ${p.role.toLowerCase()} from ${p.country} creating ${p.genre} music and looking for collaborators.`;
-
+function openDetail(p) {
   detailBox.innerHTML = `
     <h2>${p.name}</h2>
-    <p style="color:#bbb;margin-top:6px">${text}</p>
-    <p style="margin-top:10px"><b>Contact:</b> ${p.email}</p>
+    <p style="margin:10px 0;color:#aaa">
+      This artist is a <b>${p.role.toLowerCase()}</b> from <b>${p.country}</b>
+      creating <b>${p.genre}</b> music and looking for collaborators.
+    </p>
+
+    <p><b>Contact:</b> ${p.email || "Not provided"}</p>
 
     <div style="margin-top:14px;display:flex;gap:10px">
       <a class="btn primary" href="mailto:${p.email}">Email artist</a>
@@ -87,11 +78,11 @@ function showDetails(p) {
     </div>
   `;
 
+  detailModal.style.display = "flex";
+
   document.getElementById("closeDetail").onclick = () => {
     detailModal.style.display = "none";
   };
-
-  detailModal.style.display = "flex";
 }
 
 /* ================= DISCOVER ================= */
@@ -100,8 +91,6 @@ async function initDiscover() {
   const list = document.querySelector("#list");
   const filter = document.querySelector("#filterRole");
   if (!list) return;
-
-  createDetailModal();
 
   async function render() {
     list.innerHTML = "Loading...";
@@ -121,7 +110,7 @@ async function initDiscover() {
           <div class="meta">${p.genre} • ${p.country}</div>
         `;
 
-        div.onclick = () => showDetails(p);
+        div.onclick = () => openDetail(p);
         list.appendChild(div);
       });
   }

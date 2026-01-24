@@ -236,3 +236,6 @@ select option:hover {
   padding: 18px;
   box-shadow: 0 0 40px rgba(0,0,0,.8);
 }
+.profile {
+  cursor: pointer;
+}
