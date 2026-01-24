@@ -7,7 +7,6 @@ const modal = document.getElementById("authModal");
 const emailInput = document.getElementById("emailInput");
 const sendBtn = document.getElementById("sendOtpBtn");
 
-// Check if email exists
 let userEmail = localStorage.getItem("userEmail");
 
 if (!userEmail && modal) {
@@ -43,18 +42,17 @@ function initAdd() {
       name: document.querySelector("#name").value.trim(),
       genre: document.querySelector("#genre").value,
       country: document.querySelector("#country").value.trim(),
-      link: document.querySelector("#link").value.trim(),
       email: email,
       createdAt: serverTimestamp()
     };
 
-    if (!data.name || !data.genre || !data.country || !data.link) {
+    if (!data.name || !data.genre || !data.country) {
       alert("Fill all fields");
       return;
     }
 
     await addDoc(profilesRef, data);
-    alert("Profile added successfully");
+    alert("Profile added 🔥");
     window.location.href = "discover.html";
   });
 }
@@ -63,7 +61,13 @@ function initAdd() {
 async function initDiscover() {
   const list = document.querySelector("#list");
   const filter = document.querySelector("#filterRole");
+  const detailModal = document.getElementById("detailModal");
+  const detailBox = document.getElementById("detailBox");
   if (!list) return;
+
+  function makeSentence(p) {
+    return `This artist is a ${p.role.toLowerCase()} from ${p.country} creating ${p.genre} music and looking for collaborators.`;
+  }
 
   async function render() {
     list.innerHTML = "Loading...";
@@ -81,14 +85,31 @@ async function initDiscover() {
         div.innerHTML = `
           <h3>${p.name} <span class="badge">${p.role}</span></h3>
           <div class="meta">${p.genre} • ${p.country}</div>
-          <a class="btn" href="mailto:${p.email}">Contact artist</a>
         `;
+
+        div.onclick = () => {
+          detailBox.innerHTML = `
+            <h2>${p.name}</h2>
+            <p style="color:#aaa;margin-top:6px">${makeSentence(p)}</p>
+            <p style="margin-top:10px"><b>Contact:</b> ${p.email}</p>
+            <div class="row" style="margin-top:14px">
+              <a class="btn primary" href="mailto:${p.email}">Email artist</a>
+              <button class="btn" onclick="closeDetail()">Close</button>
+            </div>
+          `;
+          detailModal.style.display = "flex";
+        };
+
         list.appendChild(div);
       });
   }
 
   filter.addEventListener("change", render);
   render();
+
+  window.closeDetail = () => {
+    detailModal.style.display = "none";
+  };
 }
 
 initAdd();
