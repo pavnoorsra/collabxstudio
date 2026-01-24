@@ -216,3 +216,23 @@ select option:hover {
 #sendOtpBtn:active{
   transform:scale(.96);
 }
+/* ===== DETAIL MODAL (Artist Profile) ===== */
+#detailModal{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.75);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  backdrop-filter: blur(6px);
+}
+
+#detailBox{
+  width: min(520px, 92vw);
+  background: rgba(19,19,32,.92);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 0 40px rgba(0,0,0,.8);
+}

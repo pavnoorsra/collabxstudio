@@ -2,15 +2,18 @@ import { db, collection, addDoc, getDocs, serverTimestamp } from "./firebase.js"
 
 const profilesRef = collection(db, "profiles");
 
-// ================= EMAIL POPUP =================
+/* ================= EMAIL POPUP ================= */
+
 const modal = document.getElementById("authModal");
 const emailInput = document.getElementById("emailInput");
 const sendBtn = document.getElementById("sendOtpBtn");
 
-let userEmail = localStorage.getItem("userEmail");
+const savedEmail = localStorage.getItem("userEmail");
 
-if (!userEmail && modal) {
+if (!savedEmail && modal) {
   modal.style.display = "flex";
+} else if (modal) {
+  modal.style.display = "none";
 }
 
 if (sendBtn) {
@@ -23,7 +26,8 @@ if (sendBtn) {
   };
 }
 
-// ================= ADD PROFILE =================
+/* ================= ADD PROFILE ================= */
+
 function initAdd() {
   const form = document.querySelector("#profileForm");
   if (!form) return;
@@ -31,23 +35,17 @@ function initAdd() {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const email = localStorage.getItem("userEmail");
-    if (!email) {
-      alert("Please enter email first");
-      return;
-    }
-
     const data = {
       role: document.querySelector("#role").value,
       name: document.querySelector("#name").value.trim(),
       genre: document.querySelector("#genre").value,
       country: document.querySelector("#country").value.trim(),
-      email: email,
+      email: localStorage.getItem("userEmail"),
       createdAt: serverTimestamp()
     };
 
-    if (!data.name || !data.genre || !data.country) {
-      alert("Fill all fields");
+    if (!data.name || !data.genre || !data.country || !data.email) {
+      alert("Fill all fields and enter email");
       return;
     }
 
@@ -57,17 +55,53 @@ function initAdd() {
   });
 }
 
-// ================= DISCOVER =================
+/* ================= DETAIL MODAL ================= */
+
+let detailModal;
+let detailBox;
+
+function createDetailModal() {
+  detailModal = document.createElement("div");
+  detailModal.id = "detailModal";
+  detailModal.innerHTML = `
+    <div id="detailBox"></div>
+  `;
+  document.body.appendChild(detailModal);
+
+  detailModal.addEventListener("click", (e) => {
+    if (e.target === detailModal) detailModal.style.display = "none";
+  });
+}
+
+function showDetails(p) {
+  const text = `This artist is a ${p.role.toLowerCase()} from ${p.country} creating ${p.genre} music and looking for collaborators.`;
+
+  detailBox.innerHTML = `
+    <h2>${p.name}</h2>
+    <p style="color:#bbb;margin-top:6px">${text}</p>
+    <p style="margin-top:10px"><b>Contact:</b> ${p.email}</p>
+
+    <div style="margin-top:14px;display:flex;gap:10px">
+      <a class="btn primary" href="mailto:${p.email}">Email artist</a>
+      <button class="btn" id="closeDetail">Close</button>
+    </div>
+  `;
+
+  document.getElementById("closeDetail").onclick = () => {
+    detailModal.style.display = "none";
+  };
+
+  detailModal.style.display = "flex";
+}
+
+/* ================= DISCOVER ================= */
+
 async function initDiscover() {
   const list = document.querySelector("#list");
   const filter = document.querySelector("#filterRole");
-  const detailModal = document.getElementById("detailModal");
-  const detailBox = document.getElementById("detailBox");
   if (!list) return;
 
-  function makeSentence(p) {
-    return `This artist is a ${p.role.toLowerCase()} from ${p.country} creating ${p.genre} music and looking for collaborators.`;
-  }
+  createDetailModal();
 
   async function render() {
     list.innerHTML = "Loading...";
@@ -87,30 +121,16 @@ async function initDiscover() {
           <div class="meta">${p.genre} • ${p.country}</div>
         `;
 
-        div.onclick = () => {
-          detailBox.innerHTML = `
-            <h2>${p.name}</h2>
-            <p style="color:#aaa;margin-top:6px">${makeSentence(p)}</p>
-            <p style="margin-top:10px"><b>Contact:</b> ${p.email}</p>
-            <div class="row" style="margin-top:14px">
-              <a class="btn primary" href="mailto:${p.email}">Email artist</a>
-              <button class="btn" onclick="closeDetail()">Close</button>
-            </div>
-          `;
-          detailModal.style.display = "flex";
-        };
-
+        div.onclick = () => showDetails(p);
         list.appendChild(div);
       });
   }
 
   filter.addEventListener("change", render);
   render();
-
-  window.closeDetail = () => {
-    detailModal.style.display = "none";
-  };
 }
+
+/* ================= INIT ================= */
 
 initAdd();
 initDiscover();
