@@ -1,13 +1,4 @@
-import { db, collection, addDoc, getDocs, serverTimestamp } from "./firebase.js";
-import {
-  getStorage,
-  ref,
-  uploadBytes,
-  getDownloadURL
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
-
-const storage = getStorage();
-const profilesRef = collection(db, "profiles");
+import { supabase } from "./supabase.js";
 
 /* ================= ADD PROFILE ================= */
 function initAdd() {
@@ -21,9 +12,9 @@ function initAdd() {
     const name = document.querySelector("#name").value.trim();
     const genre = document.querySelector("#genre").value;
     const country = document.querySelector("#country").value.trim();
-    const platform = document.querySelector("#platform").value;
-    const username = document.querySelector("#username").value.trim();
-    const files = document.querySelector("#workFiles").files;
+    const platform = document.querySelector("#contactPlatform").value;
+    const username = document.querySelector("#contactId").value.trim();
+    const files = document.querySelector("#songs").files;
 
     if (!name || !genre || !country || !platform || !username) {
       alert("Fill all fields");
@@ -38,24 +29,39 @@ function initAdd() {
     }
 
     for (let file of files) {
-      const fileRef = ref(storage, "tracks/" + Date.now() + "_" + file.name);
-      await uploadBytes(fileRef, file);
-      const url = await getDownloadURL(fileRef);
-      audioUrls.push(url);
+      const filePath = `tracks/${Date.now()}_${file.name}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("tracks")
+        .upload(filePath, file);
+
+      if (uploadError) {
+        alert("Upload failed");
+        return;
+      }
+
+      const { data } = supabase.storage.from("tracks").getPublicUrl(filePath);
+      audioUrls.push(data.publicUrl);
     }
 
-    const data = {
-      role,
-      name,
-      genre,
-      country,
-      platform,
-      username,
-      audioUrls,
-      createdAt: serverTimestamp()
-    };
+    const { error } = await supabase.from("profiles").insert([
+      {
+        role,
+        name,
+        genre,
+        country,
+        platform,
+        username,
+        audio_urls: audioUrls
+      }
+    ]);
 
-    await addDoc(profilesRef, data);
+    if (error) {
+      alert("DB error");
+      console.error(error);
+      return;
+    }
+
     alert("Profile added 🔥");
     window.location.href = "discover.html";
   });
@@ -72,13 +78,18 @@ async function initDiscover() {
 
   async function render() {
     list.innerHTML = "Loading...";
-    const snap = await getDocs(profilesRef);
-    const all = snap.docs.map(d => d.data());
-    const role = filter.value;
 
+    const { data, error } = await supabase.from("profiles").select("*");
+
+    if (error) {
+      list.innerHTML = "Error loading data";
+      return;
+    }
+
+    const role = filter.value;
     list.innerHTML = "";
 
-    all
+    data
       .filter(p => role === "all" || p.role === role)
       .forEach(p => {
         const div = document.createElement("div");
@@ -103,9 +114,9 @@ async function initDiscover() {
 
       <p><b>Contact:</b> ${p.platform} → ${p.username}</p>
 
-      ${p.audioUrls?.length ? `
+      ${p.audio_urls?.length ? `
         <h4 style="margin-top:12px">Artist work</h4>
-        ${p.audioUrls.map(url => `
+        ${p.audio_urls.map(url => `
           <audio controls style="width:100%;margin-top:6px">
             <source src="${url}" type="audio/mpeg">
           </audio>
