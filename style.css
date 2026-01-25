@@ -239,3 +239,48 @@ select option:hover {
 .profile {
   cursor: pointer;
 }
+@media (max-width: 600px) {
+  .nav {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .brand {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .links {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .links .btn {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+}
+@media (max-width: 600px) {
+  .h1 {
+    font-size: 30px;
+    line-height: 1.1;
+  }
+
+  .p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .hero {
+    padding-top: 24px;
+  }
+}
+@media (max-width: 600px) {
+  .row {
+    flex-direction: column;
+  }
+
+  .row .btn {
+    width: 100%;
+  }
+}
