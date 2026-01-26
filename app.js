@@ -3,18 +3,29 @@ import { supabase } from "./supabase.js";
 /* ================= AUTH UI ================= */
 const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
+const welcomeUser = document.getElementById("welcomeUser");
 
 async function initAuthUI() {
-  if (!loginBtn && !logoutBtn) return;
+  if (!loginBtn && !logoutBtn && !welcomeUser) return;
 
   const { data: sessionData } = await supabase.auth.getSession();
 
   if (sessionData.session) {
+    const user = sessionData.session.user;
+
     loginBtn && (loginBtn.style.display = "none");
     logoutBtn && (logoutBtn.style.display = "inline-flex");
+
+    if (welcomeUser) {
+      welcomeUser.textContent = `Welcome, ${user.email}`;
+    }
   } else {
     loginBtn && (loginBtn.style.display = "inline-flex");
     logoutBtn && (logoutBtn.style.display = "none");
+
+    if (welcomeUser) {
+      welcomeUser.textContent = "";
+    }
   }
 
   if (loginBtn) {
