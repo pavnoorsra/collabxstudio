@@ -10,6 +10,10 @@ const loginEmail = document.getElementById("loginEmail");
 const sendLoginLink = document.getElementById("sendLoginLink");
 const closeLogin = document.getElementById("closeLogin");
 
+const loginFormView = document.getElementById("loginFormView");
+const loginSuccessView = document.getElementById("loginSuccessView");
+const closeSuccess = document.getElementById("closeSuccess");
+
 async function initAuthUI() {
   const { data: sessionData } = await supabase.auth.getSession();
 
@@ -30,11 +34,13 @@ async function initAuthUI() {
     if (welcomeUser) welcomeUser.textContent = "";
   }
 
-  if (loginBtn) {
+  if (loginBtn && loginModal) {
     loginBtn.onclick = () => {
       loginModal.style.display = "flex";
-      loginEmail.value = "";
-      loginEmail.focus();
+      loginFormView && (loginFormView.style.display = "block");
+      loginSuccessView && (loginSuccessView.style.display = "none");
+      loginEmail && (loginEmail.value = "");
+      loginEmail && loginEmail.focus();
     };
   }
 
@@ -44,17 +50,29 @@ async function initAuthUI() {
     };
   }
 
+  if (closeSuccess) {
+    closeSuccess.onclick = () => {
+      loginModal.style.display = "none";
+    };
+  }
+
   if (sendLoginLink) {
     sendLoginLink.onclick = async () => {
       const email = loginEmail.value.trim();
       if (!email) {
-        alert("Enter email");
+        alert("Please enter email");
         return;
       }
 
-      await supabase.auth.signInWithOtp({ email });
-      alert("Magic link sent. Check your email 📧");
-      loginModal.style.display = "none";
+      const { error } = await supabase.auth.signInWithOtp({ email });
+
+      if (error) {
+        alert("Login failed: " + error.message);
+        return;
+      }
+
+      loginFormView && (loginFormView.style.display = "none");
+      loginSuccessView && (loginSuccessView.style.display = "block");
     };
   }
 

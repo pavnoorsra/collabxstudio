@@ -84,19 +84,36 @@
 </div>
 
 <!-- 🔐 LOGIN MODAL -->
+<!-- 🔐 LOGIN MODAL -->
 <div id="loginModal" class="modal">
-  <div class="modal-box">
-    <h3>Login</h3>
-    <p class="meta">Enter your email to receive a magic login link.</p>
+  <div class="modal-box" id="loginBox">
 
-    <input type="email" id="loginEmail" placeholder="you@example.com" />
+    <!-- FORM VIEW -->
+    <div id="loginFormView">
+      <h3>Login</h3>
+      <p class="meta">Enter your email to receive a magic login link.</p>
 
-    <div class="row" style="margin-top:12px">
-      <button class="btn primary" id="sendLoginLink">Send link</button>
-      <button class="btn" id="closeLogin">Cancel</button>
+      <input type="email" id="loginEmail" placeholder="you@example.com" />
+
+      <div class="row" style="margin-top:12px">
+        <button class="btn primary" id="sendLoginLink">Send link</button>
+        <button class="btn" id="closeLogin">Cancel</button>
+      </div>
     </div>
+
+    <!-- SUCCESS VIEW -->
+    <div id="loginSuccessView" style="display:none">
+      <h3>Link sent ✅</h3>
+      <p class="meta">Check your email to complete login.</p>
+
+      <div class="row" style="margin-top:12px">
+        <button class="btn primary" id="closeSuccess">Close</button>
+      </div>
+    </div>
+
   </div>
 </div>
+
 
 <script type="module" src="app.js"></script>
 </body>
