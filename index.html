@@ -9,13 +9,13 @@
 
 <body>
 
-<!-- 🌐 MAIN SITE -->
 <div class="container">
   <div class="nav">
     <div class="brand">
       <span>CollabX Studio</span>
       <span class="badge">collaborate</span>
     </div>
+
     <div class="links">
       <div id="welcomeUser" class="user-chip"></div>
 
@@ -27,7 +27,6 @@
     </div>
   </div>
 
-  <!-- HERO -->
   <div class="hero">
     <h1 class="h1">Find singers and producers to collaborate with.</h1>
     <p class="p">Connect and create music together.</p>
@@ -39,7 +38,6 @@
     </div>
   </div>
 
-  <!-- WHAT IS -->
   <div class="grid">
     <div class="card">
       <h2>What is CollabX Studio?</h2>
@@ -59,36 +57,16 @@
     </div>
   </div>
 
-  <!-- HOW IT WORKS -->
-  <div class="hero">
-    <h2>How it works</h2>
-    <div class="cards">
-      <div class="profile">
-        <h3>1. Create a profile</h3>
-        <p class="meta">Add your role, genre, and upload your MP3 vocals or music.</p>
-      </div>
-      <div class="profile">
-        <h3>2. Discover artists</h3>
-        <p class="meta">Browse singers and producers and listen to their work.</p>
-      </div>
-      <div class="profile">
-        <h3>3. Start collaborating</h3>
-        <p class="meta">Connect and work together on new music projects.</p>
-      </div>
-    </div>
-  </div>
-
   <div class="footer">
     CollabX Studio • Built for independent musicians
   </div>
 </div>
 
 <!-- 🔐 LOGIN MODAL -->
-<!-- 🔐 LOGIN MODAL -->
 <div id="loginModal" class="modal">
-  <div class="modal-box" id="loginBox">
+  <div class="modal-box">
 
-    <!-- FORM VIEW -->
+    <!-- FORM -->
     <div id="loginFormView">
       <h3>Login</h3>
       <p class="meta">Enter your email to receive a magic login link.</p>
@@ -99,9 +77,11 @@
         <button class="btn primary" id="sendLoginLink">Send link</button>
         <button class="btn" id="closeLogin">Cancel</button>
       </div>
+
+      <p id="loginError" class="error-text"></p>
     </div>
 
-    <!-- SUCCESS VIEW -->
+    <!-- SUCCESS -->
     <div id="loginSuccessView" style="display:none">
       <h3>Link sent ✅</h3>
       <p class="meta">Check your email to complete login.</p>
@@ -113,7 +93,6 @@
 
   </div>
 </div>
-
 
 <script type="module" src="app.js"></script>
 </body>

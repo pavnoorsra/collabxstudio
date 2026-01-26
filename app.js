@@ -13,6 +13,7 @@ const closeLogin = document.getElementById("closeLogin");
 const loginFormView = document.getElementById("loginFormView");
 const loginSuccessView = document.getElementById("loginSuccessView");
 const closeSuccess = document.getElementById("closeSuccess");
+const loginError = document.getElementById("loginError");
 
 async function initAuthUI() {
   const { data: sessionData } = await supabase.auth.getSession();
@@ -21,67 +22,64 @@ async function initAuthUI() {
     const user = sessionData.session.user;
     const name = user.email.split("@")[0];
 
-    loginBtn && (loginBtn.style.display = "none");
-    logoutBtn && (logoutBtn.style.display = "inline-flex");
+    loginBtn.style.display = "none";
+    logoutBtn.style.display = "inline-flex";
 
     if (welcomeUser) {
       welcomeUser.textContent = `Hi, ${name}`;
       welcomeUser.setAttribute("data-letter", name[0].toUpperCase());
     }
   } else {
-    loginBtn && (loginBtn.style.display = "inline-flex");
-    logoutBtn && (logoutBtn.style.display = "none");
+    loginBtn.style.display = "inline-flex";
+    logoutBtn.style.display = "none";
     if (welcomeUser) welcomeUser.textContent = "";
   }
 
-  if (loginBtn && loginModal) {
-    loginBtn.onclick = () => {
-      loginModal.style.display = "flex";
-      loginFormView && (loginFormView.style.display = "block");
-      loginSuccessView && (loginSuccessView.style.display = "none");
-      loginEmail && (loginEmail.value = "");
-      loginEmail && loginEmail.focus();
-    };
-  }
+  loginBtn.onclick = () => {
+    loginModal.style.display = "flex";
+    loginFormView.style.display = "block";
+    loginSuccessView.style.display = "none";
+    loginError.textContent = "";
+    loginEmail.value = "";
+    loginEmail.focus();
+  };
 
-  if (closeLogin) {
-    closeLogin.onclick = () => {
-      loginModal.style.display = "none";
-    };
-  }
+  closeLogin.onclick = () => {
+    loginModal.style.display = "none";
+  };
 
-  if (closeSuccess) {
-    closeSuccess.onclick = () => {
-      loginModal.style.display = "none";
-    };
-  }
+  closeSuccess.onclick = () => {
+    loginModal.style.display = "none";
+  };
 
-  if (sendLoginLink) {
-    sendLoginLink.onclick = async () => {
-      const email = loginEmail.value.trim();
-      if (!email) {
-        alert("Please enter email");
-        return;
-      }
+  sendLoginLink.onclick = async () => {
+    const email = loginEmail.value.trim();
+    if (!email) {
+      loginError.textContent = "Please enter your email.";
+      return;
+    }
 
-      const { error } = await supabase.auth.signInWithOtp({ email });
+    sendLoginLink.disabled = true;
+    sendLoginLink.textContent = "Sending...";
 
-      if (error) {
-        alert("Login failed: " + error.message);
-        return;
-      }
+    const { error } = await supabase.auth.signInWithOtp({ email });
 
-      loginFormView && (loginFormView.style.display = "none");
-      loginSuccessView && (loginSuccessView.style.display = "block");
-    };
-  }
+    sendLoginLink.disabled = false;
+    sendLoginLink.textContent = "Send link";
 
-  if (logoutBtn) {
-    logoutBtn.onclick = async () => {
-      await supabase.auth.signOut();
-      location.reload();
-    };
-  }
+    if (error) {
+      loginError.textContent = error.message;
+      return;
+    }
+
+    loginFormView.style.display = "none";
+    loginSuccessView.style.display = "block";
+  };
+
+  logoutBtn.onclick = async () => {
+    await supabase.auth.signOut();
+    location.reload();
+  };
 }
 
 /* ================= ADD PROFILE ================= */
@@ -91,7 +89,6 @@ async function initAdd() {
 
   const { data: userData } = await supabase.auth.getUser();
   if (!userData.user) {
-    alert("Please login first");
     window.location.href = "index.html";
     return;
   }
@@ -140,7 +137,6 @@ async function initAdd() {
 
       if (uploadError) {
         alert("Upload failed");
-        console.error(uploadError);
         return;
       }
 
@@ -166,11 +162,9 @@ async function initAdd() {
 
     if (error) {
       alert("DB error");
-      console.error(error);
       return;
     }
 
-    alert("Profile added 🔥");
     window.location.href = "discover.html";
   });
 }
@@ -224,7 +218,7 @@ async function initDiscover() {
       <p><b>Contact:</b> ${p.platform} → ${p.username}</p>
 
       ${p.audio_urls?.length ? `
-        <h4 style="margin-top:12px">Artist work</h4>
+        <h4>Artist work</h4>
         ${p.audio_urls.map(url => `
           <audio controls style="width:100%;margin-top:6px">
             <source src="${url}" type="audio/mpeg">
