@@ -21,7 +21,7 @@
     </div>
   </div>
 
-  <div class="card" style="margin-top:24px">
+  <form id="profileForm" class="card" style="margin-top:24px">
 
     <h2>Add your profile</h2>
     <p class="p">Upload your work and contact method.</p>
@@ -29,8 +29,8 @@
     <div class="field">
       <label>Role</label>
       <select id="role">
-        <option>Singer</option>
         <option>Producer</option>
+        <option>Singer</option>
       </select>
     </div>
 
@@ -53,12 +53,12 @@
 
     <div class="field">
       <label>City / Country</label>
-      <input type="text" id="location" />
+      <input type="text" id="country" />
     </div>
 
     <div class="field">
       <label>Contact platform</label>
-      <select id="platform">
+      <select id="contactPlatform">
         <option>Instagram</option>
         <option>Discord</option>
         <option>WhatsApp</option>
@@ -69,21 +69,21 @@
 
     <div class="field">
       <label>Username / ID</label>
-      <input type="text" id="username" />
+      <input type="text" id="contactId" />
     </div>
 
     <div class="field">
       <label>Upload your work (max 2 MP3)</label>
-      <input type="file" id="files" accept=".mp3" multiple />
+      <input type="file" id="songs" accept=".mp3" multiple />
       <small>Max 2 files. MP3 only.</small>
     </div>
 
     <div class="row" style="margin-top:18px">
-      <button class="btn primary" id="saveBtn">Save profile</button>
+      <button class="btn primary" type="submit">Save profile</button>
       <a class="btn" href="discover.html">View people</a>
     </div>
 
-  </div>
+  </form>
 
 </div>
 
