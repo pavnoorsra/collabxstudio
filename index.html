@@ -9,7 +9,6 @@
 
 <body>
 
-
 <!-- 🌐 MAIN SITE -->
 <div class="container">
   <div class="nav">
@@ -20,9 +19,8 @@
     <div class="links">
       <div id="welcomeUser" class="user-chip"></div>
 
-
       <button class="btn" id="loginBtn">Login</button>
-<button class="btn" id="logoutBtn" style="display:none">Logout</button>
+      <button class="btn" id="logoutBtn" style="display:none">Logout</button>
 
       <a class="btn" href="discover.html">Discover</a>
       <a class="btn primary" href="add.html">Get started</a>
@@ -32,13 +30,8 @@
   <!-- HERO -->
   <div class="hero">
     <h1 class="h1">Find singers and producers to collaborate with.</h1>
-    <p class="p">
-      Connect and create music together.
-      <br>
-    </p>
-    <p class="p">
-      Create a profile in under one minute or browse artists to discover collaborators.
-    </p>
+    <p class="p">Connect and create music together.</p>
+    <p class="p">Create a profile in under one minute or browse artists to discover collaborators.</p>
 
     <div class="row" style="margin-top:20px">
       <a class="btn primary" href="add.html">Create your profile</a>
@@ -72,30 +65,36 @@
     <div class="cards">
       <div class="profile">
         <h3>1. Create a profile</h3>
-        <p class="meta">
-          Add your role, genre, and upload your MP3 vocals or music.
-        </p>
+        <p class="meta">Add your role, genre, and upload your MP3 vocals or music.</p>
       </div>
       <div class="profile">
         <h3>2. Discover artists</h3>
-        <p class="meta">
-          Browse singers and producers and listen to their work.
-        </p>
+        <p class="meta">Browse singers and producers and listen to their work.</p>
       </div>
       <div class="profile">
         <h3>3. Start collaborating</h3>
-        <p class="meta">
-          Connect and work together on new music projects.
-        </p>
+        <p class="meta">Connect and work together on new music projects.</p>
       </div>
     </div>
   </div>
 
-
-
-
   <div class="footer">
     CollabX Studio • Built for independent musicians
+  </div>
+</div>
+
+<!-- 🔐 LOGIN MODAL -->
+<div id="loginModal" class="modal">
+  <div class="modal-box">
+    <h3>Login</h3>
+    <p class="meta">Enter your email to receive a magic login link.</p>
+
+    <input type="email" id="loginEmail" placeholder="you@example.com" />
+
+    <div class="row" style="margin-top:12px">
+      <button class="btn primary" id="sendLoginLink">Send link</button>
+      <button class="btn" id="closeLogin">Cancel</button>
+    </div>
   </div>
 </div>
 

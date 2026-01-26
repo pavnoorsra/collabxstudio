@@ -5,38 +5,56 @@ const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 const welcomeUser = document.getElementById("welcomeUser");
 
-async function initAuthUI() {
-  if (!loginBtn && !logoutBtn && !welcomeUser) return;
+const loginModal = document.getElementById("loginModal");
+const loginEmail = document.getElementById("loginEmail");
+const sendLoginLink = document.getElementById("sendLoginLink");
+const closeLogin = document.getElementById("closeLogin");
 
+async function initAuthUI() {
   const { data: sessionData } = await supabase.auth.getSession();
 
   if (sessionData.session) {
     const user = sessionData.session.user;
+    const name = user.email.split("@")[0];
 
     loginBtn && (loginBtn.style.display = "none");
     logoutBtn && (logoutBtn.style.display = "inline-flex");
 
     if (welcomeUser) {
-      const name = user.email.split("@")[0];
       welcomeUser.textContent = `Hi, ${name}`;
       welcomeUser.setAttribute("data-letter", name[0].toUpperCase());
     }
-
   } else {
     loginBtn && (loginBtn.style.display = "inline-flex");
     logoutBtn && (logoutBtn.style.display = "none");
-
-    if (welcomeUser) {
-      welcomeUser.textContent = "";
-    }
+    if (welcomeUser) welcomeUser.textContent = "";
   }
 
   if (loginBtn) {
-    loginBtn.onclick = async () => {
-      const email = prompt("Enter your email:");
-      if (!email) return;
+    loginBtn.onclick = () => {
+      loginModal.style.display = "flex";
+      loginEmail.value = "";
+      loginEmail.focus();
+    };
+  }
+
+  if (closeLogin) {
+    closeLogin.onclick = () => {
+      loginModal.style.display = "none";
+    };
+  }
+
+  if (sendLoginLink) {
+    sendLoginLink.onclick = async () => {
+      const email = loginEmail.value.trim();
+      if (!email) {
+        alert("Enter email");
+        return;
+      }
+
       await supabase.auth.signInWithOtp({ email });
-      alert("Check your email for login link 📧");
+      alert("Magic link sent. Check your email 📧");
+      loginModal.style.display = "none";
     };
   }
 
@@ -53,7 +71,6 @@ async function initAdd() {
   const form = document.querySelector("#profileForm");
   if (!form) return;
 
-  // 🔐 Require login
   const { data: userData } = await supabase.auth.getUser();
   if (!userData.user) {
     alert("Please login first");
@@ -118,7 +135,7 @@ async function initAdd() {
 
     const { error } = await supabase.from("profiles").insert([
       {
-        user_id: user.id,   // 👈 REQUIRED FOR RLS
+        user_id: user.id,
         role,
         name,
         genre,
