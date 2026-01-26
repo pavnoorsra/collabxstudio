@@ -6,12 +6,14 @@
   <title>Add Profile • CollabX Studio</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
 <div class="container">
+
   <div class="nav">
     <div class="brand">
-      <a href="index.html">CollabX Studio</a>
+      <span>CollabX Studio</span>
       <span class="badge">add profile</span>
     </div>
     <div class="links">
@@ -19,75 +21,70 @@
     </div>
   </div>
 
-  <div class="hero">
-    <div class="card">
-      <h2>Add your profile</h2>
-      <p class="p">Upload your work and contact method.</p>
+  <div class="card" style="margin-top:24px">
 
-      <form id="profileForm">
-        <div class="field">
-          <label>Role</label>
-          <select id="role" required>
-            <option>Producer</option>
-            <option>Singer</option>
-          </select>
-        </div>
+    <h2>Add your profile</h2>
+    <p class="p">Upload your work and contact method.</p>
 
-        <div class="field">
-          <label>Artist name</label>
-          <input id="name" required />
-        </div>
-
-        <div class="field">
-          <label>Genre</label>
-          <select id="genre" required>
-            <option>Hip-Hop</option>
-            <option>R&B</option>
-            <option>Pop</option>
-            <option>EDM</option>
-            <option>Lo-fi</option>
-            <option>Rock</option>
-            <option>Punjabi</option>
-            <option>Other</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>City / Country</label>
-          <input id="country" required />
-        </div>
-
-        <div class="field">
-          <label>Contact platform</label>
-          <select id="contactPlatform" required>
-            <option value="">Select platform</option>
-            <option>Instagram</option>
-            <option>Twitter</option>
-            <option>Discord</option>
-            <option>WhatsApp</option>
-            <option>Telegram</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>Username / ID</label>
-          <input id="contactId" required />
-        </div>
-
-        <!-- 🎵 MP3 UPLOAD -->
-        <div class="field">
-          <label>Upload your work (max 2 MP3)</label>
-          <input id="songs" type="file" accept="audio/mpeg" multiple />
-          <small>Max 2 files. MP3 only.</small>
-        </div>
-
-        <div class="row" style="margin-top:16px">
-          <button class="btn primary" type="submit">Save profile</button>
-          <a class="btn" href="discover.html">View people</a>
-        </div>
-      </form>
+    <div class="field">
+      <label>Role</label>
+      <select id="role">
+        <option>Singer</option>
+        <option>Producer</option>
+      </select>
     </div>
+
+    <div class="field">
+      <label>Artist name</label>
+      <input type="text" id="name" />
+    </div>
+
+    <div class="field">
+      <label>Genre</label>
+      <select id="genre">
+        <option>Hip-Hop</option>
+        <option>Pop</option>
+        <option>R&B</option>
+        <option>EDM</option>
+        <option>Lo-fi</option>
+        <option>Rock</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>City / Country</label>
+      <input type="text" id="location" />
+    </div>
+
+    <div class="field">
+      <label>Contact platform</label>
+      <select id="platform">
+        <option>Instagram</option>
+        <option>Discord</option>
+        <option>WhatsApp</option>
+        <option>Telegram</option>
+        <option>Email</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Username / ID</label>
+      <input type="text" id="username" />
+    </div>
+
+    <div class="field">
+      <label>Upload your work (max 2 MP3)</label>
+      <input type="file" id="files" accept=".mp3" multiple />
+      <small>Max 2 files. MP3 only.</small>
+    </div>
+
+    <div class="row" style="margin-top:18px">
+      <button class="btn primary" id="saveBtn">Save profile</button>
+      <a class="btn" href="discover.html">View people</a>
+    </div>
+
   </div>
+
 </div>
 
 <script type="module" src="app.js"></script>
