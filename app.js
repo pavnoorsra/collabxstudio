@@ -1,9 +1,53 @@
 import { supabase } from "./supabase.js";
 
+/* ================= AUTH UI ================= */
+const loginBtn = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+
+async function initAuthUI() {
+  if (!loginBtn && !logoutBtn) return;
+
+  const { data: sessionData } = await supabase.auth.getSession();
+
+  if (sessionData.session) {
+    loginBtn && (loginBtn.style.display = "none");
+    logoutBtn && (logoutBtn.style.display = "inline-flex");
+  } else {
+    loginBtn && (loginBtn.style.display = "inline-flex");
+    logoutBtn && (logoutBtn.style.display = "none");
+  }
+
+  if (loginBtn) {
+    loginBtn.onclick = async () => {
+      const email = prompt("Enter your email:");
+      if (!email) return;
+      await supabase.auth.signInWithOtp({ email });
+      alert("Check your email for login link 📧");
+    };
+  }
+
+  if (logoutBtn) {
+    logoutBtn.onclick = async () => {
+      await supabase.auth.signOut();
+      location.reload();
+    };
+  }
+}
+
 /* ================= ADD PROFILE ================= */
-function initAdd() {
+async function initAdd() {
   const form = document.querySelector("#profileForm");
   if (!form) return;
+
+  // 🔐 Require login
+  const { data: userData } = await supabase.auth.getUser();
+  if (!userData.user) {
+    alert("Please login first");
+    window.location.href = "index.html";
+    return;
+  }
+
+  const user = userData.user;
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -21,15 +65,25 @@ function initAdd() {
       return;
     }
 
-    let audioUrls = [];
-
     if (files.length > 2) {
       alert("Max 2 MP3 files allowed");
       return;
     }
 
+    let audioUrls = [];
+
     for (let file of files) {
-      const filePath = `tracks/${Date.now()}_${file.name}`;
+      if (!file.type.includes("audio")) {
+        alert("Only MP3 files allowed");
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        alert("Max 5MB per file");
+        return;
+      }
+
+      const filePath = `${user.id}/${Date.now()}_${file.name}`;
 
       const { error: uploadError } = await supabase.storage
         .from("tracks")
@@ -37,15 +91,20 @@ function initAdd() {
 
       if (uploadError) {
         alert("Upload failed");
+        console.error(uploadError);
         return;
       }
 
-      const { data } = supabase.storage.from("tracks").getPublicUrl(filePath);
+      const { data } = supabase.storage
+        .from("tracks")
+        .getPublicUrl(filePath);
+
       audioUrls.push(data.publicUrl);
     }
 
     const { error } = await supabase.from("profiles").insert([
       {
+        user_id: user.id,   // 👈 REQUIRED FOR RLS
         role,
         name,
         genre,
@@ -79,7 +138,9 @@ async function initDiscover() {
   async function render() {
     list.innerHTML = "Loading...";
 
-    const { data, error } = await supabase.from("profiles").select("*");
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("name, role, genre, country, platform, username, audio_urls");
 
     if (error) {
       list.innerHTML = "Error loading data";
@@ -98,7 +159,6 @@ async function initDiscover() {
           <h3>${p.name} <span class="badge">${p.role}</span></h3>
           <div class="meta">${p.genre} • ${p.country}</div>
         `;
-
         div.onclick = () => openDetail(p);
         list.appendChild(div);
       });
@@ -134,9 +194,11 @@ async function initDiscover() {
     };
   }
 
-  filter.addEventListener("change", render);
+  filter?.addEventListener("change", render);
   render();
 }
 
+/* ================= INIT ================= */
+initAuthUI();
 initAdd();
 initDiscover();
