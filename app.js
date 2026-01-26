@@ -17,8 +17,11 @@ async function initAuthUI() {
     logoutBtn && (logoutBtn.style.display = "inline-flex");
 
     if (welcomeUser) {
-      welcomeUser.textContent = `Welcome, ${user.email}`;
+      const name = user.email.split("@")[0];
+      welcomeUser.textContent = `Hi, ${name}`;
+      welcomeUser.setAttribute("data-letter", name[0].toUpperCase());
     }
+
   } else {
     loginBtn && (loginBtn.style.display = "inline-flex");
     logoutBtn && (logoutBtn.style.display = "none");
