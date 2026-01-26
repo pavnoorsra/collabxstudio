@@ -84,27 +84,6 @@ a{color:inherit;text-decoration:none}
 
 .row{display:flex;gap:10px;flex-wrap:wrap}
 
-.field{display:flex;flex-direction:column;gap:6px;margin-top:12px}
-
-label{font-size:13px;color:var(--muted)}
-
-input, select{
-  padding:12px 14px;
-  border-radius:12px;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,.04);
-  color:var(--text);
-  outline:none;
-  transition:0.2s ease;
-}
-
-input:focus, select:focus{
-  border-color:var(--accent);
-  box-shadow:0 0 0 2px rgba(124,92,255,.2);
-}
-
-small{color:var(--muted)}
-
 .cards{display:grid;grid-template-columns:1fr;gap:12px;margin-top:16px}
 @media(min-width:700px){ .cards{grid-template-columns:1fr 1fr} }
 
@@ -128,123 +107,35 @@ small{color:var(--muted)}
 
 .footer{color:var(--muted);font-size:12px;margin-top:22px}
 
-.notice{color:var(--muted);font-size:13px;margin-top:10px}
-
-/* Fix native select dropdown white issue */
-select {
-  background-color: rgba(255,255,255,0.04);
-  color: var(--text);
-  border: 1px solid var(--border);
-}
-
-select option {
-  background-color: #0b0b10;
-  color: #f4f4f7;
-}
-
-select option:checked,
-select option:hover {
-  background-color: #7c5cff;
-  color: #ffffff;
-}
-
-/* ===== EMAIL POPUP MODAL ===== */
-#authModal{
+/* ===== DETAIL MODAL FIX ===== */
+#detailModal{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.7);
+  background:rgba(0,0,0,.75);
   display:none;
-  justify-content:center;
   align-items:center;
-  z-index:9999;
+  justify-content:center;
+  z-index:10000;
   backdrop-filter:blur(6px);
 }
 
-#authModal > div{
-  background:rgba(19,19,32,.9);
-  padding:22px;
+#detailBox{
+  width:min(520px,92vw);
+  background:rgba(19,19,32,.92);
+  border:1px solid var(--border);
   border-radius:16px;
-  border:1px solid var(--border);
+  padding:18px;
   box-shadow:0 0 40px rgba(0,0,0,.8);
-  width:320px;
 }
 
-#authModal input{
-  width:100%;
-  padding:12px 14px;
-  border-radius:10px;
-  border:1px solid var(--border);
-  background:#16161d;
-  color:white;
-  margin-top:10px;
-}
-
-#sendOtpBtn{
-  margin-top:12px;
-  padding:12px;
-  width:100%;
-  border-radius:10px;
-  border:none;
-  font-weight:700;
-  background:linear-gradient(135deg,#7c5cff,#5a3dff);
-  color:white;
-  cursor:pointer;
-}
-
-/* ===== MOBILE FIX (ONE CLEAN BLOCK) ===== */
+/* ===== MOBILE FIX ===== */
 @media (max-width: 600px) {
-
-  .container {
-    padding: 16px;
-  }
-
-  .nav {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-  }
-
-  .brand {
-    width: 100%;
-    justify-content: center;
-    font-size: 18px;
-  }
-
-  .badge {
-    font-size: 12px;
-    padding: 4px 10px;
-  }
-
-  .links {
-    width: 100%;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .links .btn {
-    font-size: 15px;
-    padding: 10px 16px;
-  }
-
-  .h1 {
-    font-size: 26px;
-    line-height: 1.15;
-  }
-
-  .p {
-    font-size: 14px;
-    line-height: 1.5;
-  }
-
-  .row {
-    flex-direction: column;
-  }
-
-  .row .btn {
-    width: 100%;
-  }
-
-  .hero {
-    padding-top: 22px;
-  }
+  .container{padding:16px}
+  .nav{flex-wrap:wrap;justify-content:center;gap:10px}
+  .brand{width:100%;justify-content:center;font-size:18px}
+  .links{width:100%;justify-content:center;flex-wrap:wrap}
+  .h1{font-size:26px;line-height:1.15}
+  .p{font-size:14px;line-height:1.5}
+  .row{flex-direction:column}
+  .row .btn{width:100%}
 }
